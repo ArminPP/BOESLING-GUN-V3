@@ -6,7 +6,9 @@
 
 <a href="https://youtube.com/shorts/OpF9cLWwwy8?si=op1fHW97gnsFDSKp">
 <img src="DOCUMENTATION/READ%20ME/Boesling Gun V3 - YouTube.png" alt="BoeslingGun" width="300px" style="display: block; margin: 0 auto"></a>
-
+<br>
+(The water gun in the video above does not spray water. I removed the water container due to the sub-zero temperatures while filming this little video...)
+<br><br>
 My cat, Fellina, is about 15 years old (around 80 years in human age) and suffers from atrosis.
 We live in the country and there are lots of other cats nearby.
 Every now and then a new young player appears and tries to bully Fellina.
