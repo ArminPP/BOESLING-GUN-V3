@@ -53,6 +53,8 @@ I took both program ideas as a basis and built my own modifications around them.
 WiFiMulti wifiMulti;
 const uint16_t connectionTimeOut = 5000; // timeout for wifiMulti.run()
 
+const char *ESP_HOSTNAME = "BoeslingGun3";
+
 #define PART_BOUNDARY "123456789000000000000987654321"
 
 // CAMERA_MODEL_ESP32S3_EYE
@@ -102,7 +104,7 @@ const u_int8_t L_OFF = LOW;
 
 unsigned long FIRE_TIME_HELPER;   // helper for duration of fireing
 const uint32_t FIRE_TIME = 2000;  //
-boolean RELAY_ON = false;        // to make sure switching relays off only once in the loop()
+boolean RELAY_ON = false;         // to make sure switching relays off only once in the loop()
 unsigned long LIGHT_TIME_HELPER;  // helper for duration of light on
 const uint32_t LIGHT_TIME = 5000; //
 boolean LIGHT_ON = false;         // if Aim and FIre is active, fire must be switched off later
@@ -649,7 +651,7 @@ void printInfos(const char *text)
 */
 int randomSign()
 {
-    return random(0, 2) * 2 - 1;  // random() uses the ESP32’s RNG module !
+    return random(0, 2) * 2 - 1; // random() uses the ESP32’s RNG module !
 }
 
 /*
@@ -737,7 +739,6 @@ void checkWIFIandReconnect()
 // #################################################################;
 // #################################################################;
 {
-
     static unsigned long checkWiFiLoopPM = 0;
     unsigned long checkWiFiLoopCM = millis();
     if ((checkWiFiLoopCM - checkWiFiLoopPM >= 5000) && (WiFi.getMode() == WIFI_MODE_STA))
@@ -745,6 +746,7 @@ void checkWIFIandReconnect()
         if (WiFi.status() != WL_CONNECTED)
         {
             Serial.println("No WIFI connection found. Try to reconnect ...");
+
             if (wifiMulti.run(connectionTimeOut) == WL_CONNECTED)
             {
                 Serial.println("");
@@ -1292,8 +1294,22 @@ void setup()
         Serial.printf("Camera init failed with error 0x%x", err);
         return;
     }
+
     // Wi-Fi connection
-    WiFi.mode(WIFI_STA);                           // Connectmode Station: as client on accesspoint
+    WiFi.persistent(false);       // reset WiFi and erase credentials
+    WiFi.disconnect(false, true); // Wifi adapter off - not good! / delete ap values
+    WiFi.eraseAP();               // new function because (disconnect(false, true) doesn't erase the credentials...)
+    WiFi.mode(WIFI_OFF);          // mode is off (no AP, STA, ...)
+
+    delay(500);
+
+    Serial.println(F("after clearing WiFI credentials"));
+    // setting hostname in ESP32 always before setting the mode!
+    // https://github.com/matthias-bs/BresserWeatherSensorReceiver/issues/19
+    WiFi.setHostname(ESP_HOSTNAME);
+
+    WiFi.mode(WIFI_MODE_STA);
+    // Connectmode Station: as client on accesspoint
     wifiMulti.addAP(WIFI_1_SSID, WIFI_1_PASSWORD); // network 1
     wifiMulti.addAP(WIFI_2_SSID, WIFI_2_PASSWORD); // network 2
     wifiMulti.addAP(WIFI_3_SSID, WIFI_3_PASSWORD); // network 3, and so on ...
@@ -1305,7 +1321,7 @@ void setup()
 
     // OTA Configiration and Enable OTA
     Serial.println("\nEnabling OTA Feature");
-    ArduinoOTA.setPassword("yourPasswordHere"); // <---- change this!
+    ArduinoOTA.setPassword(OTA_PASSWORD); // <---- change this!
     ArduinoOTA.begin();
 
     // Start streaming web server
