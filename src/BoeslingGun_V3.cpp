@@ -1309,10 +1309,16 @@ void setup()
     WiFi.setHostname(ESP_HOSTNAME);
 
     WiFi.mode(WIFI_MODE_STA);
+    WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL); // for mesh/repeater (FritzBox) use the strongest AP!
+    WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);     // for mesh/repeater (FritzBox) use the strongest AP!
+
     // Connectmode Station: as client on accesspoint
     wifiMulti.addAP(WIFI_1_SSID, WIFI_1_PASSWORD); // network 1
     wifiMulti.addAP(WIFI_2_SSID, WIFI_2_PASSWORD); // network 2
     wifiMulti.addAP(WIFI_3_SSID, WIFI_3_PASSWORD); // network 3, and so on ...
+
+    delay(1000); // MANDATORY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     checkWIFIandReconnect();
 
     Serial.print("Camera Stream Ready! Go to: http://");
