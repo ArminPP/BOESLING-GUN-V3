@@ -1,11 +1,11 @@
 
 #define Version "V3" // Armins Version: is static for the project! 
 #ifndef BUILD_NUMBER
-  #define BUILD_NUMBER "38"
+  #define BUILD_NUMBER "47"
 #endif
 #ifndef VERSION
-  #define VERSION "v1.0.250110_38 - 2025-01-10 12:22:00.827724"
+  #define VERSION "v1.0.250221_47 - 2025-02-21 14:35:41.751785"
 #endif
 #ifndef VERSION_SHORT
-  #define VERSION_SHORT "v1.0.250110_38"
+  #define VERSION_SHORT "v1.0.250221_47"
 #endif

@@ -446,6 +446,7 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
         <div class="span-cell"; id="servBottom">Bot: 0</div>
         <div class="span-cell"; id="coreTemp">T: 0</div>
         <div class="span-cell"; id="wifiRssi">RSSI: 0</div>
+        <div id="Repeater">REP=60: 00:00:00:00:00:00</div>
         <div class="span-cell"; id="signalStrength">Q: 0|0</div>
     </div>
 
@@ -596,6 +597,7 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
             document.getElementById("servBottom").innerText = "Bot: " + response.servBottom +"° | ";
             document.getElementById("coreTemp").innerText = "T: " + response.coreTemp +" °C | ";
             document.getElementById("wifiRssi").innerText = "RSSI: " + response.wifiRssi;
+            document.getElementById("Repeater").innerText = "REP=60: " + response.Repeater;
             document.getElementById("signalStrength").innerText = " Q: " + response.signalStrength;
 
             // check the heartBeat var and animate the ASCII heart
@@ -785,6 +787,7 @@ static esp_err_t variables_handler(httpd_req_t *req)
     jsonDoc["coreTemp"] = temperatureRead(); //
     int rssi = WiFi.RSSI();
     jsonDoc["wifiRssi"] = rssi;
+    jsonDoc["Repeater"] = WiFi.BSSIDstr();
     jsonDoc["signalStrength"] = getSignalStrengthDescription(rssi);
     jsonDoc["heartBeat"] = heartBeat;
     String jsonResponse;
